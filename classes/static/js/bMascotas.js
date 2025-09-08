@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Función para manejar la eliminación de una mascota
     async function deleteMascota(id) {
         try {
-            const response = await fetch(`${baseURL}/mascota/delete/${id}`, {
+            const response = await fetch(`${baseURL}/mascotas/delete/${id}`, {
                 method: 'DELETE'
             });
             if (response.ok) {

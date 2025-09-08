@@ -38,20 +38,29 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error:', error);
             alert('Error de conexión con la API.');
         }
+        
     }
+    
     //Carga los datos en las variables correspondientes
     async function fetchMascotaData(id) {
         try {
             const response = await fetch(`${baseURL}/${id}`);
             if (response.ok) {
                 const mascota = await response.json();
+
+        
                 nombreMascotaInput.value = mascota.nombre;
                 especieInput.value = mascota.especie;
                 edadInput.value = mascota.edad;
                 generoInput.value = mascota.genero;
+
+                if (mascota.cliente) {
+                    clienteSelect.value = mascota.cliente.idCliente;
+                } else {
+                    console.warn('Advertencia: El cliente para esta mascota no está disponible.');
+                }
+
                 
-    
-                clienteSelect.value = mascota.cliente.idCliente;
             } else if (response.status === 404) {
                 alert('Mascota no encontrada.');
                 window.history.back();
@@ -63,13 +72,13 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Error de conexión con la API.');
         }
     }
-    
-  
+
+
     fetchClients().then(() => {
         fetchMascotaData(mascotaId);
     });
 
-  
+
     form.addEventListener('submit', async function (event) {
         event.preventDefault();
 
@@ -83,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Por favor, complete todos los campos.');
             return;
         }
-//Envio de datos en JSON
+        //Envio de datos en JSON
         const mascotaData = {
             idMascota: mascotaId,
             cliente: {
